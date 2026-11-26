@@ -28,7 +28,7 @@ jobs:
       # megaRL's trainer builds on the shared training core.
       MEGATRAIN_SPEC: ${{ vars.MEGATRAIN_SPEC || secrets.MEGATRAIN_SPEC || 'megatrain>=0.1,<0.2' }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -56,7 +56,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       # Pin 3.13: PyO3 0.22's build script rejects the runner's Python 3.14.
       - uses: actions/setup-python@v5
         with:
