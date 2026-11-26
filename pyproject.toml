@@ -24,7 +24,7 @@ otel = [
     "opentelemetry-exporter-otlp-proto-http>=1.44",
 ]
 # Training-trackers fan-out used by ``megarl.observability.Tracking``.
-tracking = ["tensorboard>=2.14", "wandb>=0.16"]
+tracking = ["tensorboard>=2.21.0", "wandb>=0.16"]
 # Pinned host-memory staging (cudaHostRegister) needs PyTorch; the rest of the
 # data plane and the controller work without it.
 pinned = ["torch>=2.0"]
