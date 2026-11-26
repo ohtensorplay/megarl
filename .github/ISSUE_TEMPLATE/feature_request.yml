@@ -1,0 +1,31 @@
+name: 🚀 Feature request
+description: Suggest a new capability, backend, algorithm or optimization for megaRL
+title: "[Feature] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivation
+      description: What problem would this solve? Who would benefit?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: |
+        Describe the behavior, API, backend or algorithm you have in mind. If it
+        changes the wire contract or the accepted architecture, say so explicitly.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Other approaches or workarounds you considered, and why they are insufficient.
+  - type: textarea
+    id: resources
+    attributes:
+      label: Related resources
+      description: Paper, official implementation, model card, or benchmark data that supports the request.

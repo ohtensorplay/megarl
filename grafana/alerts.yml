@@ -1,0 +1,69 @@
+# Prometheus rule groups for the megaRL dashboard (devdocs/observability.md).
+# Load with `promtool check rules grafana/alerts.yml` and `rule_files:` in
+# prometheus.yml. Metrics come from the gateway /metrics endpoint (prefix megarl).
+groups:
+  - name: megarl.training
+    interval: 30s
+    rules:
+      - alert: MegaRLHighStaleness
+        expr: megarl_max_stale_tokens > 4096
+        for: 5m
+        labels:
+          severity: warning
+          service: megarl
+        annotations:
+          summary: "megaRL staleness above budget"
+          description: "max stale tokens is {{ $value }} for {{ $labels.instance }}."
+
+      - alert: MegaRLTrainingStalled
+        expr: rate(megarl_tokens_trained[10m]) == 0
+        for: 10m
+        labels:
+          severity: critical
+          service: megarl
+        annotations:
+          summary: "megaRL is not training"
+          description: "No tokens trained in 10 minutes on {{ $labels.instance }}."
+
+      - alert: MegaRLGroupDropRatioHigh
+        expr: rate(megarl_groups_dropped[15m]) / clamp_min(rate(megarl_reward_groups[15m]), 1) > 0.5
+        for: 10m
+        labels:
+          severity: warning
+          service: megarl
+        annotations:
+          summary: "megaRL drops too many zero-variance groups"
+          description: "More than half of reward groups are dropped on {{ $labels.instance }}."
+
+      - alert: MegaRLPolicyVersionSkew
+        expr: max(megarl_policy_version) - min(megarl_policy_version) > 2
+        for: 5m
+        labels:
+          severity: warning
+          service: megarl
+        annotations:
+          summary: "megaRL policy versions diverged"
+          description: "Policy replica versions differ by {{ $value }}."
+
+  - name: megarl.gateway
+    interval: 30s
+    rules:
+      - alert: MegaRLGatewayErrors
+        expr: sum(rate(megarl_other_events{event=~"gateway_.*"}[5m])) > 0.1
+        for: 5m
+        labels:
+          severity: warning
+          service: megarl
+        annotations:
+          summary: "megaRL gateway errors"
+          description: "Gateway error events are firing at {{ $value }}/s."
+
+      - alert: MegaRLPausedTooLong
+        expr: megarl_paused == 1
+        for: 15m
+        labels:
+          severity: warning
+          service: megarl
+        annotations:
+          summary: "megaRL controller has been paused for 15 minutes"
+          description: "The controller on {{ $labels.instance }} is still paused."

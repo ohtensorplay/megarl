@@ -1,0 +1,8 @@
+[package]
+name = "megarl-transport"
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0"
+description = "Lease bookkeeping for the out-of-band trajectory data plane"
+
+[dependencies]

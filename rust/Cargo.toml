@@ -1,0 +1,39 @@
+[workspace]
+members = [
+    "crates/protocol",
+    "crates/control",
+    "crates/optimizer",
+    "crates/registry",
+    "crates/transport",
+    "crates/gateway",
+    "crates/reward",
+    "crates/reward-service",
+    "crates/agent",
+    "crates/nettools",
+]
+resolver = "2"
+
+[package]
+name = "megarl-rs"
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0"
+description = "Python bindings for the megaRL control and data plane"
+
+[lib]
+name = "megarl_rs"
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+pyo3 = { version = "0.22", features = ["extension-module"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+megarl-protocol = { path = "crates/protocol" }
+megarl-control = { path = "crates/control" }
+megarl-optimizer = { path = "crates/optimizer" }
+megarl-transport = { path = "crates/transport" }
+megarl-gateway = { path = "crates/gateway" }
+megarl-reward = { path = "crates/reward" }
+megarl-agent = { path = "crates/agent" }
+megarl-nettools = { path = "crates/nettools" }
+tokio = { version = "1", features = ["full"] }

@@ -1,0 +1,9 @@
+[package]
+name = "megarl-registry"
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0"
+description = "Model-version registry and publish/commit/abort state machine for the megaRL control plane"
+
+[dependencies]
+serde_json = "1"

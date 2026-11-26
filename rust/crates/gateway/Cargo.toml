@@ -1,0 +1,18 @@
+[package]
+name = "megarl-gateway"
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0"
+description = "Rust rollout HTTP gateway; Python GPU workers stay behind a versioned frame protocol"
+
+[dependencies]
+axum = "0.8"
+tokio = { version = "1", features = ["full"] }
+serde_json = "1"
+megarl-protocol = { path = "../protocol" }
+megarl-control = { path = "../control" }
+megarl-registry = { path = "../registry" }
+tensorplay-observability = { path = "../../../../tensorplay-observability/rust" }
+
+[dev-dependencies]
+tower = { version = "0.5", features = ["util"] }

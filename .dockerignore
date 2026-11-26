@@ -1,0 +1,17 @@
+.git
+.github
+.pytest_cache
+.ruff_cache
+__pycache__
+*.pyc
+*.so
+target
+refs
+version_1
+tests
+devdocs
+# brand/ is required at build time: the gateway embeds SVG/CSS via include_str!.
+brand/*.png
+brand/*.md
+*.md
+!README.md

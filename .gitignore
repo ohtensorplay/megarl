@@ -1,0 +1,23 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.tp_cache/
+.mypy_cache/
+.venv/
+venv/
+.coverage
+htmlcov/
+build/
+dist/
+*.egg-info/
+
+# Vendored reference repositories (see refs/UPSTREAMS.md)
+refs/
+
+# Rust build artifacts and compiled native extensions
+rust/target/
+*.so
+
+# Internal design / engineering notes (not for publication)
+devdocs/

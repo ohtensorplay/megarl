@@ -1,0 +1,18 @@
+[package]
+name = "megarl-reward-service"
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0"
+description = "HTTP service exposing the Rust reward verifier pool with auth, health and metrics"
+
+[dependencies]
+axum = "0.8"
+tokio = { version = "1", features = ["full"] }
+serde_json = "1"
+megarl-reward = { path = "../reward" }
+
+[dev-dependencies]
+
+[[bin]]
+name = "megarl-reward-router"
+path = "src/main.rs"

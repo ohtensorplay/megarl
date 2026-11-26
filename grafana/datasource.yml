@@ -1,0 +1,18 @@
+# Grafana provisioning: point Prometheus at the megaRL gateway's /metrics.
+# Mount this file into /etc/grafana/provisioning/datasources/ and replace the
+# host with the gateway address. The dashboard uses uid megarl-prometheus.
+apiVersion: 1
+
+deleteDatasources: []
+
+datasources:
+  - name: MegaRL-Prometheus
+    uid: megarl-prometheus
+    type: prometheus
+    access: proxy
+    url: http://127.0.0.1:8080
+    isDefault: true
+    editable: true
+    jsonData:
+      timeInterval: "5s"
+      httpMethod: GET

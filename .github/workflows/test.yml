@@ -1,0 +1,69 @@
+name: Tests
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  python:
+    name: Python unit tests (CPU)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      # TensorPlay dev wheels live on this index, not on PyPI.
+      PIP_EXTRA_INDEX_URL: ${{ vars.PIP_EXTRA_INDEX_URL || secrets.PIP_EXTRA_INDEX_URL || 'https://download.tensorplay.cn/simple' }}
+      # Pin the CPU build: this job has no GPU and the +cu/+maca wheels ship a
+      # different libruntime_*.so and fail at import time.
+      TENSORPLAY_SPEC: ${{ vars.TENSORPLAY_SPEC || secrets.TENSORPLAY_SPEC || 'tensorplay==1.4.0.dev20261124+cpu' }}
+      # megaRL's trainer builds on the shared training core.
+      MEGATRAIN_SPEC: ${{ vars.MEGATRAIN_SPEC || secrets.MEGATRAIN_SPEC || 'megatrain>=0.1,<0.2' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: rust
+      - name: Install megaRL with test extras
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --pre "$TENSORPLAY_SPEC"
+          python -m pip install --pre "$MEGATRAIN_SPEC"
+          python -m pip install -e ".[test]"
+      # The gateway tests spawn the compiled Rust binary; maturin only builds
+      # the Python extension, so build the binary explicitly.
+      - name: Build Rust gateway binary
+        run: cargo build --manifest-path rust/Cargo.toml --locked -p megarl-rs --bin megarl-gateway
+      - name: Build Rust reward router binary
+        run: cargo build --manifest-path rust/Cargo.toml --locked -p megarl-reward-service --bin megarl-reward-router
+      - name: pytest
+        run: python -m pytest tests -q
+
+  rust:
+    name: Rust unit tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      # Pin 3.13: PyO3 0.22's build script rejects the runner's Python 3.14.
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: rust
+      - name: cargo test
+        run: cargo test --manifest-path rust/Cargo.toml --locked

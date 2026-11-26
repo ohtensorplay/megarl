@@ -1,0 +1,10 @@
+[package]
+name = "megarl-agent"
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0"
+description = "Tool-call parsing and argument validation for the megaRL agentic loop"
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"

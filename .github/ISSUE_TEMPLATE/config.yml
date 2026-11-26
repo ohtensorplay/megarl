@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Architecture baseline
+    url: https://github.com/ohtensorplay/megarl/blob/main/devdocs/architecture.md
+    about: Accepted design decisions, layer boundaries and implementation status.
+  - name: Community forum
+    url: https://forum.tensorplay.org
+    about: Questions, usage discussions and ideas that are not bug reports.
+  - name: Security vulnerability
+    url: https://github.com/ohtensorplay/megarl/security/advisories/new
+    about: Please report security issues privately, not as a public issue.
