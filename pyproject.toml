@@ -27,7 +27,7 @@ otel = [
 tracking = ["tensorboard>=2.14", "wandb>=0.16"]
 # Pinned host-memory staging (cudaHostRegister) needs PyTorch; the rest of the
 # data plane and the controller work without it.
-pinned = ["torch>=2.0"]
+pinned = ["torch>=2.15.0"]
 # Embedded megaLM rollout backend. The service path needs a running
 # megalm-server instead and does not require this extra in the client.
 rollout = ["megalm-runtime>=0.2,<0.3"]
